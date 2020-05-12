@@ -13,9 +13,15 @@ body {
 
 .container {
   background-color: #fff;
-  width: 40%;
+  width: 95%;
   margin: 0 auto;
   padding: 0.25rem 0;
+}
+
+@media (min-width: 768px) {
+  .container {
+    width: 40%;
+  }
 }
 
 .app_header {
@@ -89,71 +95,12 @@ body {
       -ms-flex-pack: justify;
           justify-content: space-between;
   margin-bottom: 1rem;
+  position: relative;
 }
 
 .playlist .playlist_header {
   width: 100%;
   padding: 0.5rem;
-  position: relative;
-}
-
-.playlist .playlist_header .scroll_btn_right,
-.playlist .playlist_header .scroll_btn_left {
-  width: 1.5rem;
-  height: 1.5rem;
-  position: absolute;
-  bottom: -250%;
-  z-index: 99;
-  border-radius: 100%;
-  background-color: #c0c0c0;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  cursor: pointer;
-}
-
-.playlist .playlist_header .scroll_btn_right .svg-icon,
-.playlist .playlist_header .scroll_btn_left .svg-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-.playlist .playlist_header .scroll_btn_right .svg-icon path,
-.playlist .playlist_header .scroll_btn_right .svg-icon polygon,
-.playlist .playlist_header .scroll_btn_right .svg-icon rect,
-.playlist .playlist_header .scroll_btn_left .svg-icon path,
-.playlist .playlist_header .scroll_btn_left .svg-icon polygon,
-.playlist .playlist_header .scroll_btn_left .svg-icon rect {
-  fill: #eee;
-}
-
-.playlist .playlist_header .scroll_btn_right .svg-icon circle,
-.playlist .playlist_header .scroll_btn_left .svg-icon circle {
-  stroke: #eee;
-  stroke-width: 1;
-}
-
-.playlist .playlist_header .scroll_btn_right {
-  right: -0.5rem;
-}
-
-.playlist .playlist_header .scroll_btn_left {
-  left: -0.5rem;
-  visibility: hidden;
-  opacity: 0;
-  -webkit-transition: all 250ms ease-in-out;
-  transition: all 250ms ease-in-out;
-}
-
-.playlist .playlist_header .scroll_btn_left.show {
-  visibility: visible;
-  opacity: 1;
 }
 
 .playlist .playlist_title {
@@ -171,6 +118,8 @@ body {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
   overflow-x: scroll;
 }
 
@@ -178,7 +127,101 @@ body {
   display: none;
 }
 
+.playlist .scrollControl {
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  background-color: transparent;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.playlist .scrollControl .scroll_btn_right,
+.playlist .scrollControl .scroll_btn_left {
+  width: 1.5rem;
+  height: 1.5rem;
+  z-index: 99;
+  border-radius: 100%;
+  background-color: rgba(237, 50, 55, 0.75);
+  -webkit-box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.3);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  cursor: pointer;
+}
+
+.playlist .scrollControl .scroll_btn_right .svg-icon,
+.playlist .scrollControl .scroll_btn_left .svg-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.playlist .scrollControl .scroll_btn_right .svg-icon path,
+.playlist .scrollControl .scroll_btn_right .svg-icon polygon,
+.playlist .scrollControl .scroll_btn_right .svg-icon rect,
+.playlist .scrollControl .scroll_btn_left .svg-icon path,
+.playlist .scrollControl .scroll_btn_left .svg-icon polygon,
+.playlist .scrollControl .scroll_btn_left .svg-icon rect {
+  fill: #eee;
+}
+
+.playlist .scrollControl .scroll_btn_right .svg-icon circle,
+.playlist .scrollControl .scroll_btn_left .svg-icon circle {
+  stroke: #eee;
+  stroke-width: 1;
+}
+
+.playlist .scrollControl .scroll_btn_right {
+  margin-right: -0.5rem;
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: all 250ms ease-in-out;
+  transition: all 250ms ease-in-out;
+}
+
+.playlist .scrollControl .scroll_btn_right .hide {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.playlist .scrollControl .scroll_btn_left {
+  margin-left: -0.5rem;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: all 250ms ease-in-out;
+  transition: all 250ms ease-in-out;
+}
+
+.playlist .scrollControl .scroll_btn_left.show {
+  visibility: visible;
+  opacity: 1;
+}
+
 .playlist_item {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto;
   background-color: #fff;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -196,24 +239,24 @@ body {
 }
 
 .playlist_item:hover {
-  border: 2px solid #dfdfdf;
+  border: 2px solid rgba(237, 50, 55, 0.75);
 }
 
 .playlist_item .thumb {
-  width: 280px;
+  width: 240px;
   margin-bottom: 0.75rem;
 }
 
 .playlist_item .detail {
-  width: 100%;
+  width: 240px;
 }
 
-.playlist_item .detail > .detail_title {
+.playlist_item .detail .detail_title {
   font-size: 1rem;
   margin-bottom: 0.25rem;
 }
 
-.playlist_item .detail > .detail_desc {
+.playlist_item .detail .detail_desc {
   font-size: 0.75rem;
   color: gray;
 }
