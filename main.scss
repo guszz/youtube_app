@@ -9,7 +9,6 @@ body{
   background-color: #eee;
 }
 .container{
-  background-color: #fff;
   width: 95%;
   margin: 0 auto;
   padding: 0.25rem 0;
@@ -56,6 +55,7 @@ body{
   z-index: 999;
 }
 #playlists{
+  overflow: hidden;
   background-color: #fff;
   padding: 0.5rem;
 }
