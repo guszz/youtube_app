@@ -7,33 +7,15 @@ $(document).ready(function(){
   function getPlayLists(){
     var urlChannel = 'https://www.googleapis.com/youtube/v3/playlists';
     var channelId = 'UCBlL-vhD7zwMLuSuDBGXSXA';
-    playlistId = 'PLzYMlWHitCJTdZRbXdWIaBBAolOnXZBFl';
     var channelOptions ={
       part: 'snippet',
       key: apiKey,
-      maxResult: 20,
+      maxResult: 99,
       channelId: channelId
     };
     $.getJSON(urlChannel, channelOptions, function(data){
       console.log(data);
-      resultsPlayList(data);   
-      getVideos(playlistId);   
-    });
-  };
-
-  function getVideos(playlistId){
-    var url = 'https://www.googleapis.com/youtube/v3/playlistItems';
-    playlistId = 'PLzYMlWHitCJTdZRbXdWIaBBAolOnXZBFl';
-    var requestOptions = {
-      part: 'snippet',
-      key: apiKey,
-      maxResult: 20,
-      playlistId: playlistId
-    };
-    $.getJSON(url, requestOptions, function(vid){
-      var vidId = vid.items[0].snippet.resourceId.videoId;
-      console.log(vid);
-      mainVid(vidId);
+      resultsPlayList(data);    
     });
   };
 
@@ -53,11 +35,9 @@ $(document).ready(function(){
   };
 
   function resultsPlayList(data){
-    $.each(data.items, function(i, item){
-      var title = item.snippet.title;
-      var desc = item.snippet.description;
-      var thumb = item.snippet.thumbnails.maxres.url;
-      var listId = item.id;
+    $.each(data.items, function(i, listItem){
+      var title = listItem.snippet.title;
+      var listId = listItem.id;
       $('#playlists').append(`
         <section class="playlist">
           <header class="playlist_header">
@@ -65,16 +45,7 @@ $(document).ready(function(){
               ${title}
             </h3>
           </header>
-          <div class="playlist_items">
-            <article class="playlist_item" id="${listId}" >
-              <img class="thumb" src="${thumb}">
-              <div class="detail">
-                <h4 class="detail_title">${title}</h4>
-                <p class="detail_desc">
-                  ${desc}...
-                </p>
-              </div>
-            </article>
+          <div class="playlist_items" id="${listId}">
             <div class="scrollControl">
               <span class="scroll_btn_left">
                 <svg class="svg-icon" viewBox="0 0 20 20">
@@ -98,14 +69,49 @@ $(document).ready(function(){
           </div>
         </section>  
       `);
+      function getVideos(){
+        var url = 'https://www.googleapis.com/youtube/v3/playlistItems';
+        var playlistId = listId;
+        var requestOptions = {
+          part: 'snippet',
+          key: apiKey,
+          maxResult: 99,
+          pageToken: 'CAUQAA',
+          playlistId: playlistId
+        };
+        $.getJSON(url, requestOptions, function(vdata){
+          // var vidId = vid.items[0].snippet.resourceId.videoId;
+          console.log(vdata);
+          //mainVid(vidId);
+          resultsList(vdata);
+        });
+      };
+      getVideos()
     });
+    function resultsList(vdata){
+      $.each(vdata.items, function(i, vidItem){
+        var thumb = vidItem.snippet.thumbnails.maxres.url;
+        var title = vidItem.snippet.title;
+        var desc = vidItem.snippet.description.substr(0, 96);
+        var vid = vidItem.snippet.resourceId.videoId;
+        $('.playlist .playlist_items').append(`
+          <article class="playlist_item" data-videoKey="${vid}" >
+            <img class="thumb" src="${thumb}">
+            <div class="detail">
+              <h4 class="detail_title">${title}</h4>
+              <p class="detail_desc">
+                ${desc}...
+              </p>
+            </div>
+          </article>
+        `);
+      });
 
-    $('.playlist .playlist_items').on('click','article', function(){
-      playlistId = $(this).attr('id');
-      $(this).fadeOut(200);
-      getVideos(playlistId);
-      resultsList(data);
-    });
+      $('.playlist .playlist_items').on('click','article', function(){
+        var vidId = $(this).attr('data-videoKey');
+        mainVid(vidId);
+      });
+    };
 
     $('.scroll_btn_right').click(function(){
       var next = $(this).parents('.playlist_items').scrollLeft() + 260;
@@ -128,30 +134,6 @@ $(document).ready(function(){
       else{
         $('.scroll_btn_left').removeClass('show');
       }
-    });
-  };
-  function resultsList(vid){
-    $.each(vid.items, function(i, item){
-      var thumb = item.snippet.thumbnails.maxres.url;
-      var title = item.snippet.title;
-      var desc = item.snippet.description.substr(0, 96);
-      var vid = item.snippet.resourceId.videoId;
-      $('.playlist .playlist_items').append(`
-        <article class="playlist_item" data-videoKey="${vid}" >
-          <img class="thumb" src="${thumb}">
-          <div class="detail">
-            <h4 class="detail_title">${title}</h4>
-            <p class="detail_desc">
-              ${desc}...
-            </p>
-          </div>
-        </article>
-      `);
-    });
-
-    $('.playlist .playlist_items').on('click','article', function(){
-      var vidId = $(this).attr('data-videoKey');
-      mainVid(vidId);
     });
   };
 });
