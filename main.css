@@ -115,16 +115,22 @@ body {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
   -ms-flex-wrap: nowrap;
       flex-wrap: nowrap;
+  padding: 0.75rem 0;
   overflow-x: scroll;
 }
 
 .playlist .playlist_items::-webkit-scrollbar {
   display: none;
+}
+
+.playlist .playlist_items.grabbing {
+  cursor: -webkit-grabbing;
+  cursor: grabbing;
 }
 
 .playlist .scrollControl {
@@ -233,13 +239,21 @@ body {
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: flex-start;
-  padding: 0.5rem;
+  padding: 0.25rem;
+  margin-right: 1.25rem;
   border: 2px solid transparent;
   border-radius: 4px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  -webkit-transition: all 220ms ease-in-out;
+  transition: all 220ms ease-in-out;
 }
 
 .playlist_item:hover {
-  border: 2px solid rgba(237, 50, 55, 0.75);
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
 }
 
 .playlist_item .thumb {
@@ -248,6 +262,7 @@ body {
 }
 
 .playlist_item .detail {
+  cursor: pointer;
   width: 240px;
 }
 
